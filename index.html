@@ -4,9 +4,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1DB954">
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js');
+            });
+        }
+    </script>
     <title>Spotifacts</title>
     <meta name="description"
-        content="Upload your Spotify data export and generate a Nutrition Facts–style breakdown of your listening habits.">
+        content="Generate a Nutrition Facts label from your Spotify data. 100% private, client-side Spotify history visualizer. Get your stats now!">
+    <meta name="keywords"
+        content="Spotify stats, Spotify nutrition facts, Spotify wrapped alternative, Spotify data visualizer, Spotify listening history">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://faust504.github.io/spotifacts/">
+    <meta property="og:title" content="Spotify Nutrition Facts">
+    <meta property="og:description"
+        content="Turn your Spotify listening history into a Nutrition Facts label. 100% private and secure.">
+    <meta property="og:image" content="https://faust504.github.io/spotifacts/example.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://faust504.github.io/spotifacts/">
+    <meta property="twitter:title" content="Spotify Nutrition Facts">
+    <meta property="twitter:description"
+        content="Turn your Spotify listening history into a Nutrition Facts label. 100% private and secure.">
+    <meta property="twitter:image" content="https://faust504.github.io/spotifacts/example.png">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
@@ -178,6 +206,7 @@
                 <div class="nf-inner" id="nfInner"></div>
             </div>
         </div>
+        <p class="share-hint">📸 Send this to your friends!</p>
     </section>
 
     <footer class="site-footer">

@@ -217,6 +217,7 @@ ${timeRangeLabel ? `<div class="nf-subtitle">${esc(timeRangeLabel)}</div>` : ''}
     if (sections.has('funfacts')) html += `<div class="nf-funfact">${buildFunFacts(d)}</div>`;
 
     // FOOTER
-    html += `<div class="nf-footer"><strong>*</strong> Percent Daily Values are based on a 24-hour day. Your actual listening may be higher or lower depending on your vibe needs. Not a real nutrition label.</div>`;
+    html += `<div class="nf-footer"><strong>*</strong> Percent Daily Values are based on a 24-hour day. Your actual listening may be higher or lower depending on your mood. Not a real nutrition label.</div>`;
+    html += `<div class="nf-watermark">faust504.github.io/spotifacts</div>`;
     inner.innerHTML = html;
 }

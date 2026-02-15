@@ -8,6 +8,10 @@ const saveImageBtn = $('saveImageBtn'), resetBtn = $('resetBtn'), customizeBtn =
 // Initial state - Force disable to ensure it's unclickable
 generateBtn.disabled = true;
 
+// Reset scroll on reload
+if (history.scrollRestoration) history.scrollRestoration = 'manual';
+window.scrollTo(0, 0);
+
 let collectedFiles = new Map();
 let parsedRawHistory = [];
 let parsedExtras = {};

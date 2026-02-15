@@ -1005,3 +1005,22 @@ body {
         grid-template-columns: repeat(2, 1fr)
     }
 }
+
+.nf-watermark {
+    text-align: center;
+    font-size: 0.65rem;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    margin-top: 8px;
+    padding-top: 6px;
+    border-top: 1px dashed #ddd;
+    color: #999;
+    text-transform: uppercase;
+}
+
+.share-hint {
+    margin-top: 1rem;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-style: italic;
+}
