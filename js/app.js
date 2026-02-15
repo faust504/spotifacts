@@ -129,17 +129,42 @@ customizeBtn.addEventListener('click', () => { result.style.display = 'none'; sh
 resetBtn.addEventListener('click', () => { collectedFiles.clear(); fileListEl.innerHTML = ''; generateBtn.disabled = true; fileInput.value = ''; result.style.display = 'none'; configPanel.style.display = 'none'; landing.style.display = 'block' });
 
 // Add save image functionality (was missing in my manual extraction but present in HTML)
-saveImageBtn.addEventListener('click', () => {
+saveImageBtn.addEventListener('click', async () => {
     const label = document.getElementById('nfLabel');
-    html2canvas(label, {
-        scale: 2,
-        backgroundColor: '#ffffff',
-        useCORS: true,
-        allowTaint: false
-    }).then(canvas => {
+    const pfp = label.querySelector('.nf-pfp');
+    let originalSrc = null;
+
+    // Helper to convert image to base64
+    if (pfp) {
+        try {
+            originalSrc = pfp.src;
+            const response = await fetch(originalSrc, { mode: 'cors' });
+            const blob = await response.blob();
+            const reader = new FileReader();
+            await new Promise((resolve, reject) => {
+                reader.onloadend = () => { pfp.src = reader.result; resolve() };
+                reader.onerror = reject;
+                reader.readAsDataURL(blob);
+            });
+        } catch (e) { console.warn('PFP fetch failed', e) }
+    }
+
+    try {
+        const canvas = await html2canvas(label, {
+            scale: 2,
+            backgroundColor: '#ffffff',
+            useCORS: true,
+            allowTaint: false,
+            logging: false
+        });
         const link = document.createElement('a');
         link.download = 'spotify-nutrition-facts.png';
         link.href = canvas.toDataURL('image/png');
         link.click();
-    });
+    } catch (e) {
+        console.error('Save failed', e);
+        alert('Failed to generate image. Please try again.');
+    } finally {
+        if (pfp && originalSrc) pfp.src = originalSrc;
+    }
 });
