@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spotifacts</title>
+    <meta name="description"
+        content="Upload your Spotify data export and generate a Nutrition Facts–style breakdown of your listening habits.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+</head>
+
+<body>
+    <div class="scroll-shadow"></div>
+
+    <!-- LANDING -->
+    <section id="landing">
+        <div class="hero">
+            <h1>Spotify <span>Nutrition Facts</span></h1>
+            <p>Upload your Spotify data export and get a<br>Nutrition Facts–style breakdown of your listening.</p>
+        </div>
+        <div class="dropzone" id="dropzone">
+            <span class="dropzone-icon">📦</span>
+            <h2>Drop files or a .zip here</h2>
+            <p>Accepts <strong>my_spotify_data.zip</strong> exports or individual <strong>.json</strong>
+                files.<br>StreamingHistory, Identity, Playlists, Marquee,<br>Wrapped, YourLibrary,
+                YourSoundCapsule.<br><em style="color:#555">Everything stays in your browser.</em></p>
+            <input type="file" id="fileInput" multiple accept=".json,.zip" aria-label="Upload Spotify data">
+        </div>
+        <div class="file-list" id="fileList"></div>
+        <div class="error-msg" id="errorMsg"></div>
+
+        <div class="btn-group">
+            <button class="btn btn-primary" id="generateBtn" disabled>Continue →</button>
+            <button class="btn btn-secondary" id="tutorialBtn">Tutorial</button>
+        </div>
+
+        <p class="privacy-note">🔒 <span>100% Private</span> — Your data never leaves your browser.</p>
+
+        <div class="example-header">Fake Example</div>
+
+        <div class="example-image-container">
+            <img src="example.png" alt="Example Result">
+        </div>
+
+        <a href="https://github.com/faust504/spotifacts" class="github-link" target="_blank">View source code on
+            GitHub</a>
+    </section>
+
+    <!-- TUTORIAL -->
+    <section id="tutorial">
+        <button class="btn btn-secondary tutorial-back-btn" id="tutorialBackBtn">← Back</button>
+        <h2>How to Get Your Spotify Data</h2>
+        <p>Getting your Spotify data is a multi-step process because Spotify usually has to manually "prepare" the
+            larger files for you. It's not an instant download, but here is exactly how to do it:</p>
+
+        <h3>1. Access the Privacy Page</h3>
+        <p>You cannot do this through the mobile app; you must use a <strong>web browser</strong> (on your phone or PC).
+        </p>
+        <ul>
+            <li>Go to <a href="https://www.spotify.com" target="_blank">spotify.com</a> and log in.</li>
+            <li>Click on your <strong>Profile Picture</strong> or <strong>Username</strong> in the top right.</li>
+            <li>Select <strong>Account</strong>.</li>
+            <li>In the left-hand sidebar menu, look for <strong>Account Privacy</strong> (or sometimes just "Privacy
+                Settings").</li>
+        </ul>
+
+        <h3>2. Choose Your Data Type</h3>
+        <p>Scroll down to the <strong>"Download your data"</strong> section. You’ll usually see two main options:</p>
+        <ul>
+            <li><strong>Account Data:</strong> This is "Step 1" on their page. It includes your playlists, library, and
+                streaming history for the <strong>last year</strong>. It usually takes about <strong>5 days</strong> to
+                receive.</li>
+            <li><strong>Extended Streaming History:</strong> This is "Step 2" or a separate checkbox. This includes
+                every song you have <strong>ever listened to</strong> since you created the account. This takes much
+                longer—often <strong>up to 30 days</strong>.</li>
+        </ul>
+
+        <h3>3. Request the Data</h3>
+        <ul>
+            <li>Check the boxes for the data you want.</li>
+            <li>Click <strong>Request Data</strong>.</li>
+            <li><strong>Check your email immediately.</strong> Spotify will send a confirmation link. You <strong>must
+                    click this link</strong> to actually start the process; if you don't, they won't prepare the files.
+            </li>
+        </ul>
+
+        <h3>4. Wait and Download</h3>
+        <ul>
+            <li>Once Spotify finishes gathering your data, they will send you a second email with a download link.</li>
+            <li>The data arrives as a <strong>.zip file</strong> containing several <strong>.json files</strong>. You
+                may now use this to create your spotify nutrition facts!</li>
+        </ul>
+    </section>
+
+    <!-- PROCESSING -->
+    <section id="processing">
+        <div class="spinner"></div>
+        <p>Analyzing your listening data…</p>
+    </section>
+
+    <!-- CONFIG PANEL -->
+    <section id="configPanel">
+        <div class="config-card">
+            <h3>Choose a <span>Preset</span></h3>
+            <div class="preset-grid" id="presetGrid">
+                <button class="preset-btn active" data-preset="complete">
+                    <span class="preset-icon">📊</span>
+                    <span class="preset-name">Complete</span>
+                    <span class="preset-desc">Full summary with everything</span>
+                </button>
+                <button class="preset-btn" data-preset="artists">
+                    <span class="preset-icon">🎤</span>
+                    <span class="preset-name">Top Artists</span>
+                    <span class="preset-desc">Artist rankings only</span>
+                </button>
+                <button class="preset-btn" data-preset="tracks">
+                    <span class="preset-icon">🎵</span>
+                    <span class="preset-name">Top Tracks</span>
+                    <span class="preset-desc">Track rankings only</span>
+                </button>
+                <button class="preset-btn" data-preset="genres">
+                    <span class="preset-icon">🎸</span>
+                    <span class="preset-name">Genre DNA</span>
+                    <span class="preset-desc">Genre breakdown only</span>
+                </button>
+                <button class="preset-btn" data-preset="habits">
+                    <span class="preset-icon">⏰</span>
+                    <span class="preset-name">Listening Habits</span>
+                    <span class="preset-desc">Hours, stats, streaks</span>
+                </button>
+                <button class="preset-btn" data-preset="custom">
+                    <span class="preset-icon">🧩</span>
+                    <span class="preset-name">Custom</span>
+                    <span class="preset-desc">Pick your own sections</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="config-card" id="customSections" style="display:none">
+            <h3>Pick <span>Sections</span></h3>
+            <div class="section-toggles" id="sectionToggles"></div>
+        </div>
+
+        <div class="config-card">
+            <h3>Time <span>Range</span></h3>
+            <div class="time-range-row" id="timeRange">
+                <button class="time-pill active" data-range="all">All Time</button>
+                <button class="time-pill" data-range="year">Last Year</button>
+                <button class="time-pill" data-range="6mo">Last 6 Months</button>
+                <button class="time-pill" data-range="3mo">Last 3 Months</button>
+                <button class="time-pill" data-range="month">Last Month</button>
+                <button class="time-pill" data-range="week">Last Week</button>
+            </div>
+        </div>
+
+        <div class="config-actions">
+            <button class="btn btn-primary" id="buildBtn">Generate Label</button>
+            <button class="btn btn-secondary" id="backBtn">← Back</button>
+        </div>
+    </section>
+
+    <!-- RESULT -->
+    <section id="result">
+        <div class="result-actions">
+            <button class="btn btn-primary" id="saveImageBtn">Save as Image</button>
+            <button class="btn btn-secondary" id="customizeBtn">Customize</button>
+            <button class="btn btn-secondary" id="resetBtn">← New Upload</button>
+        </div>
+        <div id="labelCapture">
+            <div class="nf-label" id="nfLabel">
+                <div class="nf-inner" id="nfInner"></div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="site-footer">
+        Created by <a href="https://github.com/faust504" style="color:var(--text);text-decoration:none">faust504</a>.
+    </footer>
+
+    <script src="js/parser.js"></script>
+    <script src="js/renderer.js"></script>
+    <script src="js/app.js"></script>
+</body>
+
+</html>
