@@ -1,4 +1,4 @@
-# Spotifacts 📊
+# Spotifacts
 
 A simple static website to visualize Spotify listening data. Runs completely on the client side, no data is ever sent to a server, 100% private.
 
