@@ -131,7 +131,12 @@ resetBtn.addEventListener('click', () => { collectedFiles.clear(); fileListEl.in
 // Add save image functionality (was missing in my manual extraction but present in HTML)
 saveImageBtn.addEventListener('click', () => {
     const label = document.getElementById('nfLabel');
-    html2canvas(label, { scale: 2, backgroundColor: '#ffffff' }).then(canvas => {
+    html2canvas(label, {
+        scale: 2,
+        backgroundColor: '#ffffff',
+        useCORS: true,
+        allowTaint: false
+    }).then(canvas => {
         const link = document.createElement('a');
         link.download = 'spotify-nutrition-facts.png';
         link.href = canvas.toDataURL('image/png');
