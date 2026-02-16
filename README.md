@@ -2,6 +2,9 @@
 
 A simple static website to visualize Spotify listening data. Runs completely on the client side, no data is ever sent to a server, 100% private.
 
+--- fake example ---
+![example](example.png)
+
 ## Features
 - Parses Spotify data JSON exports and visualizes history 100% locally.
 - Generates a custom, shareable "Nutrition Facts" label for your listening.
