@@ -54,7 +54,12 @@ async function handleDrop(files) {
     }
 }
 
-function hasHistory() { for (const n of collectedFiles.keys()) if (n.startsWith('StreamingHistory_music_')) return true; return false }
+function hasHistory() {
+    for (var n of collectedFiles.keys()) {
+        if (n.startsWith('StreamingHistory_music_') || n.startsWith('Streaming_History_Audio_')) return true;
+    }
+    return false;
+}
 
 function esc(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML }
 
